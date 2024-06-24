@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kawasaki Services Chatbot</title>
+    <link rel="stylesheet" href="static\style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Kawasaki Services</h1>
+        <p>Please ask your questions below:</p>
+        <div class="chatbox">
+            <textarea id="userInput" placeholder="Type your question here..."></textarea>
+            <button onclick="getChatbotResponse()">Send</button>
+        </div>
+        <div id="responseBox">
+            <p id="chatbotResponse"></p>
+        </div>
+        <div id="contactDetails" style="display: none;">
+            <p>If you are not satisfied with the answer, please contact:</p>
+            <p>Name: Aish</p>
+            <p>Contact Number: 123456789</p>
+        </div>
+    </div>
+    <script>
+        function getChatbotResponse() {
+            const userInput = document.getElementById('userInput').value;
+            fetch('/chatbot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question: userInput }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('chatbotResponse').textContent = data.answer;
+                if (!data.satisfactory) {
+                    document.getElementById('contactDetails').style.display = 'block';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
